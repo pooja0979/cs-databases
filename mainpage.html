@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relational Database - IB DP Computer Science Notes</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Patrick+Hand&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Patrick Hand', cursive;
+            background-color: #f5e6d3;
+            padding: 20px;
+        }
+        
+        .page {
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                transparent calc(100% - 1px), 
+                #d4a574 calc(100% - 1px), 
+                #d4a574 100%);
+            background-size: 100% 30px;
+            background-position: 0 10px;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            padding: 40px 40px 40px 90px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+            min-height: 1000px;
+        }
+        
+        .page::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 60px;
+            background: linear-gradient(to right, #e8d5c4 0%, #f5e6d3 100%);
+            border-right: 2px dashed #c4a57b;
+        }
+        
+        .spiral-hole {
+            position: absolute;
+            left: 20px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid #8b7355;
+            border-radius: 50%;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            font-family: 'Indie Flower', cursive;
+            font-size: 42px;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            text-decoration: underline;
+            text-decoration-color: #e74c3c;
+            text-decoration-thickness: 3px;
+        }
+        
+        h2 {
+            font-size: 32px;
+            color: #2980b9;
+            margin: 25px 0 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            font-size: 26px;
+            color: #27ae60;
+            margin: 20px 0 10px;
+        }
+        
+        p, li {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background-color: #fff59d;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .box {
+            border: 3px solid #34495e;
+            padding: 15px;
+            margin: 20px 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+        }
+        
+        .example {
+            border: 2px dashed #e74c3c;
+            padding: 15px;
+            margin: 15px 0;
+            background-color: #ffe5e5;
+            border-radius: 8px;
+        }
+        
+        .diagram {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border: 2px solid #34495e;
+            border-radius: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background-color: white;
+        }
+        
+        th, td {
+            border: 2px solid #34495e;
+            padding: 10px;
+            text-align: left;
+            font-size: 18px;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .arrow {
+            font-size: 24px;
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        ul {
+            margin-left: 30px;
+        }
+        
+        .pros {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .cons {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .key-term {
+            color: #8e44ad;
+            font-weight: bold;
+            font-size: 22px;
+        }
+        
+        .note {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .warning {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        svg {
+            width: 100%;
+            height: auto;
+        }
+        
+        .page-number {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            font-size: 24px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: Introduction & Flat File vs Relational -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>📊 Relational Databases</h1>
+    <p style="text-align: center; font-size: 18px; color: #7f8c8d;">IB DP Computer Science - Database Topic</p>
+    
+    <h2>🎯 What is a Database?</h2>
+    <p>A <span class="highlight">database</span> is an organized collection of structured data stored electronically. It allows us to store, retrieve, and manage information efficiently!</p>
+    
+    <h2>📁 Flat File Database</h2>
+    <div class="box">
+        <p><span class="key-term">Flat File Database:</span> A simple database stored as a single table (like a spreadsheet)</p>
+    </div>
+    
+    <div class="example">
+        <h3>Example: Student Records (Flat File)</h3>
+        <table>
+            <tr>
+                <th>StudentID</th>
+                <th>Name</th>
+                <th>Course1</th>
+                <th>Teacher1</th>
+                <th>Course2</th>
+                <th>Teacher2</th>
+            </tr>
+            <tr>
+                <td>001</td>
+                <td>Alice</td>
+                <td>Math</td>
+                <td>Mr. Smith</td>
+                <td>Physics</td>
+                <td>Ms. Jones</td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>Bob</td>
+                <td>Math</td>
+                <td>Mr. Smith</td>
+                <td>Chemistry</td>
+                <td>Dr. Lee</td>
+            </tr>
+            <tr>
+                <td>003</td>
+                <td>Carol</td>
+                <td>English</td>
+                <td>Mrs. Brown</td>
+                <td>Math</td>
+                <td>Mr. Smith</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="note">
+        <strong>✏️ Notice:</strong> "Mr. Smith" is repeated 3 times! This is data redundancy - a major problem!
+    </div>
+    
+    <div class="page-number">Page 1</div>
+</div>
+
+<!-- PAGE 2: Flat File Anomalies -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>⚠️ Flat File Database Problems</h1>
+    
+    <h2>The Three Anomalies</h2>
+    <p>When data is repeated (redundant), we face three serious problems:</p>
+    
+    <h3>1️⃣ Insert Anomaly</h3>
+    <div class="box">
+        <p><span class="highlight">Problem:</span> Cannot add data without adding unnecessary information</p>
+    </div>
+    
+    <div class="example">
+        <h3>📝 Example:</h3>
+        <p><strong>Scenario:</strong> A new teacher, Dr. Green, joins the school</p>
+        <p class="arrow">→</p>
+        <p>We CANNOT add Dr. Green to the database until a student enrolls in their course!</p>
+        <p>We can't store teacher information independently 😔</p>
+    </div>
+    
+    <h3>2️⃣ Delete Anomaly</h3>
+    <div class="box">
+        <p><span class="highlight">Problem:</span> Deleting data removes unintended information</p>
+    </div>
+    
+    <div class="example">
+        <h3>🗑️ Example:</h3>
+        <p><strong>Scenario:</strong> Carol (student 003) leaves the school</p>
+        <p class="arrow">→</p>
+        <p>If we delete Carol's record, we LOSE the information that Mrs. Brown teaches English!</p>
+        <p>Important data disappears unintentionally 😱</p>
+    </div>
+    
+    <h3>3️⃣ Update Anomaly</h3>
+    <div class="box">
+        <p><span class="highlight">Problem:</span> Updating data requires changing multiple records</p>
+    </div>
+    
+    <div class="example">
+        <h3>🔄 Example:</h3>
+        <p><strong>Scenario:</strong> Mr. Smith changes his name to Mr. Johnson</p>
+        <p class="arrow">→</p>
+        <p>We must update 3 different rows! If we miss one, we have <span class="highlight">inconsistent data</span></p>
+        <p>Row 1: Mr. Johnson ✓</p>
+        <p>Row 2: Mr. Johnson ✓</p>
+        <p>Row 3: Mr. Smith ✗ (Forgot to update!)</p>
+        <p style="color: #e74c3c;">Now we have conflicting information! 🤔</p>
+    </div>
+    
+    <div class="page-number">Page 2</div>
+</div>
+
+<!-- PAGE 3: Why Relational Databases -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>💡 Why Relational Databases?</h1>
+    
+    <h2>The Solution!</h2>
+    <div class="box">
+        <p><span class="key-term">Relational Database:</span> A database that stores data in multiple related tables instead of one big table</p>
+    </div>
+    
+    <h3>Key Idea: Split Data into Separate Tables!</h3>
+    
+    <div class="diagram">
+        <h3 style="text-align: center;">From Flat File → Relational Database</h3>
+        <svg viewBox="0 0 800 400">
+            <!-- Flat File -->
+            <rect x="50" y="30" width="200" height="120" fill="#ffe5e5" stroke="#e74c3c" stroke-width="3"/>
+            <text x="150" y="55" text-anchor="middle" font-size="18" font-weight="bold">Flat File</text>
+            <text x="150" y="80" text-anchor="middle" font-size="14">All data in</text>
+            <text x="150" y="100" text-anchor="middle" font-size="14">ONE table</text>
+            <text x="150" y="130" text-anchor="middle" font-size="16" fill="#e74c3c">❌ Redundancy</text>
+            
+            <!-- Arrow -->
+            <path d="M 270 90 L 330 90" stroke="#2c3e50" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+            <text x="300" y="75" text-anchor="middle" font-size="16" font-weight="bold">Split!</text>
+            
+            <!-- Relational -->
+            <rect x="350" y="30" width="140" height="70" fill="#d4edda" stroke="#27ae60" stroke-width="2"/>
+            <text x="420" y="55" text-anchor="middle" font-size="14" font-weight="bold">Students</text>
+            <text x="420" y="75" text-anchor="middle" font-size="12">Table 1</text>
+            
+            <rect x="350" y="120" width="140" height="70" fill="#d4edda" stroke="#27ae60" stroke-width="2"/>
+            <text x="420" y="145" text-anchor="middle" font-size="14" font-weight="bold">Courses</text>
+            <text x="420" y="165" text-anchor="middle" font-size="12">Table 2</text>
+            
+            <rect x="510" y="75" width="140" height="70" fill="#d4edda" stroke="#27ae60" stroke-width="2"/>
+            <text x="580" y="100" text-anchor="middle" font-size="14" font-weight="bold">Teachers</text>
+            <text x="580" y="120" text-anchor="middle" font-size="12">Table 3</text>
+            
+            <text x="500" y="230" text-anchor="middle" font-size="16" fill="#27ae60" font-weight="bold">✓ No Redundancy!</text>
+            
+            <!-- Define arrowhead marker -->
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#2c3e50"/>
+                </marker>
+            </defs>
+        </svg>
+    </div>
+    
+    <h2>Benefits of Separating Tables:</h2>
+    <ul>
+        <li>✓ <span class="pros">Each piece of data stored ONCE</span> - no redundancy!</li>
+        <li>✓ <span class="pros">Easy to update</span> - change in one place only</li>
+        <li>✓ <span class="pros">No anomalies</span> - can insert, update, delete freely</li>
+        <li>✓ <span class="pros">Better organized</span> - logical structure</li>
+    </ul>
+    
+    <div class="note">
+        <strong>🔑 Key Concept:</strong> Tables are linked through special fields called <span class="highlight">keys</span>. We'll learn about these next!
+    </div>
+    
+    <div class="page-number">Page 3</div>
+</div>
+
+<!-- PAGE 4: Relational Database Features - Entities and Keys -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>🔑 Relational Database Features (Part 1)</h1>
+    
+    <h2>1. Entity</h2>
+    <div class="box">
+        <p><span class="key-term">Entity:</span> A real-world object or concept that we want to store information about</p>
+        <p>→ Each entity becomes a <span class="highlight">table</span> in the database</p>
+    </div>
+    
+    <div class="example">
+        <h3>Examples of Entities:</h3>
+        <ul>
+            <li>🎓 Student (Person)</li>
+            <li>📚 Book (Object)</li>
+            <li>🏪 Order (Transaction)</li>
+            <li>🏢 Department (Organizational unit)</li>
+        </ul>
+    </div>
+    
+    <h2>2. Primary Key (PK)</h2>
+    <div class="box">
+        <p><span class="key-term">Primary Key:</span> A field (or combination of fields) that <span class="highlight">uniquely identifies</span> each record in a table</p>
+    </div>
+    
+    <div class="example">
+        <h3>Student Table</h3>
+        <table>
+            <tr>
+                <th style="background-color: #f39c12;">StudentID (PK)</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+            <tr>
+                <td style="background-color: #ffe5b4;">S001</td>
+                <td>Alice Chen</td>
+                <td>alice@school.com</td>
+            </tr>
+            <tr>
+                <td style="background-color: #ffe5b4;">S002</td>
+                <td>Bob Smith</td>
+                <td>bob@school.com</td>
+            </tr>
+            <tr>
+                <td style="background-color: #ffe5b4;">S003</td>
+                <td>Alice Wang</td>
+                <td>alice.w@school.com</td>
+            </tr>
+        </table>
+        <p><strong>Why StudentID is the Primary Key:</strong></p>
+        <ul>
+            <li>✓ Each value is UNIQUE (no duplicates)</li>
+            <li>✓ Never NULL (empty)</li>
+            <li>✓ Never changes</li>
+            <li>✗ Name cannot be PK - we have two "Alice"s!</li>
+        </ul>
+    </div>
+    
+    <div class="warning">
+        <strong>⚡ Primary Key Rules:</strong>
+        <ul>
+            <li>Must be UNIQUE for each record</li>
+            <li>Cannot be NULL (empty)</li>
+            <li>Should never change</li>
+            <li>Keep it simple (preferably one field)</li>
+        </ul>
+    </div>
+    
+    <div class="page-number">Page 4</div>
+</div>
+
+<!-- PAGE 5: Foreign Key -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>🔗 Relational Database Features (Part 2)</h1>
+    
+    <h2>3. Foreign Key (FK)</h2>
+    <div class="box">
+        <p><span class="key-term">Foreign Key:</span> A field in one table that refers to the Primary Key in another table</p>
+        <p>→ This is how tables are <span class="highlight">linked</span> together!</p>
+    </div>
+    
+    <div class="example">
+        <h3>Linking Students and Courses</h3>
+        
+        <table style="margin-bottom: 20px;">
+            <caption style="font-size: 20px; font-weight: bold; padding: 10px;">Students Table</caption>
+            <tr>
+                <th style="background-color: #f39c12;">StudentID (PK)</th>
+                <th>Name</th>
+            </tr>
+            <tr>
+                <td style="background-color: #ffe5b4;">S001</td>
+                <td>Alice</td>
+            </tr>
+            <tr>
+                <td style="background-color: #ffe5b4;">S002</td>
+                <td>Bob</td>
+            </tr>
+        </table>
+        
+        <table>
+            <caption style="font-size: 20px; font-weight: bold; padding: 10px;">Enrollment Table</caption>
+            <tr>
+                <th style="background-color: #f39c12;">EnrollmentID (PK)</th>
+                <th style="background-color: #3498db;">StudentID (FK)</th>
+                <th>CourseCode</th>
+                <th>Grade</th>
+            </tr>
+            <tr>
+                <td style="background-color: #ffe5b4;">E001</td>
+                <td style="background-color: #aed6f1;">S001</td>
+                <td>CS101</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td style="background-color: #ffe5b4;">E002</td>
+                <td style="background-color: #aed6f1;">S001</td>
+                <td>MATH201</td>
+                <td>B+</td>
+            </tr>
+            <tr>
+                <td style="background-color: #ffe5b4;">E003</td>
+                <td style="background-color: #aed6f1;">S002</td>
+                <td>CS101</td>
+                <td>A-</td>
+            </tr>
+        </table>
+        
+        <div class="note" style="margin-top: 20px;">
+            <strong>🎯 How it works:</strong>
+            <p>The StudentID in the Enrollment table is a <span class="highlight">Foreign Key</span> that points to the StudentID (Primary Key) in the Students table.</p>
+            <p>This links Alice (S001) to her two enrollments!</p>
+        </div>
+    </div>
+    
+    <h3>Benefits of Foreign Keys:</h3>
+    <ul>
+        <li>✓ <span class="pros">Maintains data integrity</span> - can't link to non-existent records</li>
+        <li>✓ <span class="pros">Eliminates redundancy</span> - student info stored once</li>
+        <li>✓ <span class="pros">Enables relationships</span> - connects related data</li>
+    </ul>
+    
+    <div class="page-number">Page 5</div>
+</div>
+
+<!-- PAGE 6: Composite and Concatenated Keys -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>🔑 Relational Database Features (Part 3)</h1>
+    
+    <h2>4. Composite Key</h2>
+    <div class="box">
+        <p><span class="key-term">Composite Key:</span> When TWO or MORE fields are combined to uniquely identify a record</p>
+        <p>→ Used when no single field can be unique on its own</p>
+    </div>
+    
+    <div class="example">
+        <h3>Example: Student-Course Registration</h3>
+        <table>
+            <caption style="font-size: 20px; font-weight: bold; padding: 10px;">Registration Table</caption>
+            <tr>
+                <th style="background-color: #9b59b6;" colspan="2">Composite Key (PK)</th>
+                <th>Semester</th>
+                <th>Grade</th>
+            </tr>
+            <tr>
+                <th style="background-color: #d7bde2;">StudentID</th>
+                <th style="background-color: #d7bde2;">CourseCode</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <td style="background-color: #ebdef0;">S001</td>
+                <td style="background-color: #ebdef0;">CS101</td>
+                <td>Fall 2024</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td style="background-color: #ebdef0;">S001</td>
+                <td style="background-color: #ebdef0;">MATH201</td>
+                <td>Fall 2024</td>
+                <td>B+</td>
+            </tr>
+            <tr>
+                <td style="background-color: #ebdef0;">S002</td>
+                <td style="background-color: #ebdef0;">CS101</td>
+                <td>Fall 2024</td>
+                <td>A-</td>
+            </tr>
+        </table>
+        
+        <div class="note" style="margin-top: 15px;">
+            <strong>💡 Why Composite Key?</strong>
+            <ul>
+                <li>StudentID alone is NOT unique (S001 appears twice)</li>
+                <li>CourseCode alone is NOT unique (CS101 appears twice)</li>
+                <li>But the COMBINATION (S001 + CS101) IS unique! ✓</li>
+            </ul>
+        </div>
+    </div>
+    
+    <h2>5. Concatenated Key</h2>
+    <div class="box">
+        <p><span class="key-term">Concatenated Key:</span> Similar to composite key - multiple fields joined together to form a unique identifier</p>
+        <p><strong>Note:</strong> Often used interchangeably with "composite key" in practice</p>
+    </div>
+    
+    <div class="example">
+        <h3>Example: Library Book Copies</h3>
+        <p>A library may have multiple copies of the same book:</p>
+        <table>
+            <tr>
+                <th style="background-color: #9b59b6;">BookISBN</th>
+                <th style="background-color: #9b59b6;">CopyNumber</th>
+                <th>Condition</th>
+                <th>Location</th>
+            </tr>
+            <tr>
+                <td style="background-color: #ebdef0;">978-0-123</td>
+                <td style="background-color: #ebdef0;">1</td>
+                <td>Good</td>
+                <td>Shelf A1</td>
+            </tr>
+            <tr>
+                <td style="background-color: #ebdef0;">978-0-123</td>
+                <td style="background-color: #ebdef0;">2</td>
+                <td>Worn</td>
+                <td>Shelf A1</td>
+            </tr>
+        </table>
+        <p>Concatenated Key = BookISBN + CopyNumber</p>
+    </div>
+    
+    <div class="page-number">Page 6</div>
+</div>
+
+<!-- PAGE 7: Relationships -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>🔗 Relational Database Features (Part 4)</h1>
+    
+    <h2>6. Relationships</h2>
+    <div class="box">
+        <p><span class="key-term">Relationship:</span> How entities (tables) are connected to each other</p>
+    </div>
+    
+    <h3>Types of Relationships:</h3>
+    
+    <div class="diagram">
+        <h3>a) One-to-One (1:1)</h3>
+        <p>One record in Table A relates to ONE record in Table B</p>
+        <svg viewBox="0 0 600 150">
+            <rect x="50" y="40" width="150" height="70" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
+            <text x="125" y="65" text-anchor="middle" font-size="16" font-weight="bold">Student</text>
+            <text x="125" y="90" text-anchor="middle" font-size="14">StudentID</text>
+            
+            <line x1="210" y1="75" x2="290" y2="75" stroke="#2c3e50" stroke-width="2"/>
+            <text x="250" y="70" text-anchor="middle" font-size="14">1</text>
+            <text x="250" y="95" text-anchor="middle" font-size="14">1</text>
+            
+            <rect x="300" y="40" width="150" height="70" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
+            <text x="375" y="65" text-anchor="middle" font-size="16" font-weight="bold">Passport</text>
+            <text x="375" y="90" text-anchor="middle" font-size="14">PassportNo</text>
+        </svg>
+        <p><em>Example: Each student has ONE passport, each passport belongs to ONE student</em></p>
+    </div>
+    
+    <div class="diagram">
+        <h3>b) One-to-Many (1:M) - Most Common! ⭐</h3>
+        <p>One record in Table A relates to MANY records in Table B</p>
+        <svg viewBox="0 0 600 150">
+            <rect x="50" y="40" width="150" height="70" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+            <text x="125" y="65" text-anchor="middle" font-size="16" font-weight="bold">Teacher</text>
+            <text x="125" y="90" text-anchor="middle" font-size="14">TeacherID</text>
+            
+            <line x1="210" y1="75" x2="290" y2="75" stroke="#2c3e50" stroke-width="2"/>
+            <text x="250" y="70" text-anchor="middle" font-size="14">1</text>
+            <text x="250" y="95" text-anchor="middle" font-size="14">M</text>
+            
+            <rect x="300" y="40" width="150" height="70" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+            <text x="375" y="65" text-anchor="middle" font-size="16" font-weight="bold">Student</text>
+            <text x="375" y="90" text-anchor="middle" font-size="14">StudentID</text>
+        </svg>
+        <p><em>Example: One teacher teaches MANY students, but each student has one homeroom teacher</em></p>
+    </div>
+    
+    <div class="diagram">
+        <h3>c) Many-to-Many (M:N)</h3>
+        <p>Many records in Table A relate to MANY records in Table B</p>
+        <svg viewBox="0 0 600 200">
+            <rect x="50" y="60" width="120" height="60" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2"/>
+            <text x="110" y="85" text-anchor="middle" font-size="16" font-weight="bold">Student</text>
+            
+            <line x1="180" y1="90" x2="250" y2="90" stroke="#2c3e50" stroke-width="2"/>
+            <text x="215" y="80" text-anchor="middle" font-size="14">M</text>
+            
+            <rect x="260" y="60" width="120" height="60" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+            <text x="320" y="80" text-anchor="middle" font-size="14" font-weight="bold">Enrollment</text>
+            <text x="320" y="100" text-anchor="middle" font-size="12">(Junction Table)</text>
+            
+            <line x1="390" y1="90" x2="460" y2="90" stroke="#2c3e50" stroke-width="2"/>
+            <text x="425" y="80" text-anchor="middle" font-size="14">N</text>
+            
+            <rect x="470" y="60" width="120" height="60" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2"/>
+            <text x="530" y="85" text-anchor="middle" font-size="16" font-weight="bold">Course</text>
+        </svg>
+        <p><em>Example: Many students take many courses. We need a junction table to connect them!</em></p>
+    </div>
+    
+    <div class="page-number">Page 7</div>
+</div>
+
+<!-- PAGE 8: Cardinality and Modality -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>📊 Relational Database Features (Part 5)</h1>
+    
+    <h2>7. Cardinality</h2>
+    <div class="box">
+        <p><span class="key-term">Cardinality:</span> The <span class="highlight">maximum number</span> of times an entity can be associated with another entity</p>
+        <p>→ Answers: "How many at MOST?"</p>
+    </div>
+    
+    <div class="example">
+        <h3>Cardinality Examples:</h3>
+        <table>
+            <tr>
+                <th>Relationship</th>
+                <th>Cardinality</th>
+                <th>Meaning</th>
+            </tr>
+            <tr>
+                <td>Teacher → Student</td>
+                <td>1:M</td>
+                <td>One teacher can have MANY students</td>
+            </tr>
+            <tr>
+                <td>Student → Course</td>
+                <td>M:N</td>
+                <td>Many students, many courses</td>
+            </tr>
+            <tr>
+                <td>Country → Capital</td>
+                <td>1:1</td>
+                <td>One country, one capital city</td>
+            </tr>
+        </table>
+    </div>
+    
+    <h2>8. Modality (Participation)</h2>
+    <div class="box">
+        <p><span class="key-term">Modality:</span> The <span class="highlight">minimum number</span> of times an entity must be associated with another entity</p>
+        <p>→ Answers: "Is participation required?"</p>
+        <ul>
+            <li><strong>Mandatory (1):</strong> Must participate - cannot be zero</li>
+            <li><strong>Optional (0):</strong> May or may not participate</li>
+        </ul>
+    </div>
+    
+    <div class="diagram">
+        <h3>Modality Notation (Crow's Foot)</h3>
+        <svg viewBox="0 0 700 300">
+            <!-- Example 1 -->
+            <text x="50" y="30" font-size="16" font-weight="bold">Example 1: Teacher ↔ Department</text>
+            <rect x="50" y="50" width="140" height="60" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
+            <text x="120" y="75" text-anchor="middle" font-size="14" font-weight="bold">Teacher</text>
+            <text x="120" y="95" text-anchor="middle" font-size="12">Must belong to</text>
+            
+            <line x1="200" y1="80" x2="340" y2="80" stroke="#2c3e50" stroke-width="2"/>
+            <circle cx="205" cy="80" r="4" fill="#2c3e50"/>
+            <line x1="330" y1="75" x2="340" y2="80" stroke="#2c3e50" stroke-width="2"/>
+            <line x1="330" y1="85" x2="340" y2="80" stroke="#2c3e50" stroke-width="2"/>
+            
+            <text x="270" y="65" text-anchor="middle" font-size="12">1..1</text>
+            <text x="270" y="100" text-anchor="middle" font-size="12">0..M</text>
+            
+            <rect x="350" y="50" width="140" height="60" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
+            <text x="420" y="75" text-anchor="middle" font-size="14" font-weight="bold">Department</text>
+            <text x="420" y="95" text-anchor="middle" font-size="12">May have 0+ teachers</text>
+            
+            <text x="50" y="140" font-size="13" fill="#27ae60">✓ Each teacher MUST belong to exactly 1 department (mandatory)</text>
+            <text x="50" y="160" font-size="13" fill="#27ae60">✓ A department can have 0 or many teachers (optional)</text>
+            
+            <!-- Example 2 -->
+            <text x="50" y="200" font-size="16" font-weight="bold">Example 2: Customer ↔ Order</text>
+            <rect x="50" y="220" width="140" height="60" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+            <text x="120" y="245" text-anchor="middle" font-size="14" font-weight="bold">Customer</text>
+            <text x="120" y="265" text-anchor="middle" font-size="12">May place orders</text>
+            
+            <line x1="200" y1="250" x2="340" y2="250" stroke="#2c3e50" stroke-width="2"/>
+            <circle cx="205" cy="250" r="4" fill="white" stroke="#2c3e50" stroke-width="2"/>
+            <line x1="330" y1="245" x2="340" y2="250" stroke="#2c3e50" stroke-width="2"/>
+            <line x1="330" y1="255" x2="340" y2="250" stroke="#2c3e50" stroke-width="2"/>
+            
+            <text x="270" y="235" text-anchor="middle" font-size="12">0..M</text>
+            <text x="270" y="270" text-anchor="middle" font-size="12">1..1</text>
+            
+            <rect x="350" y="220" width="140" height="60" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+            <text x="420" y="245" text-anchor="middle" font-size="14" font-weight="bold">Order</text>
+            <text x="420" y="265" text-anchor="middle" font-size="12">Must have customer</text>
+        </svg>
+    </div>
+    
+    <div class="note">
+        <strong>🎯 Remember:</strong>
+        <ul>
+            <li><strong>Cardinality</strong> = Maximum (1, M, N)</li>
+            <li><strong>Modality</strong> = Minimum (0 or 1)</li>
+        </ul>
+    </div>
+    
+    <div class="page-number">Page 8</div>
+</div>
+
+<!-- PAGE 9: Benefits of Relational Databases -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>✅ Benefits of Relational Databases</h1>
+    
+    <h2>Why are Relational Databases so Popular?</h2>
+    
+    <div class="box">
+        <h3 class="pros">1. Data Integrity & Consistency</h3>
+        <ul>
+            <li>Primary keys ensure each record is unique</li>
+            <li>Foreign keys maintain referential integrity</li>
+            <li>No update/insert/delete anomalies!</li>
+            <li>Data validation rules can be enforced</li>
+        </ul>
+    </div>
+    
+    <div class="box">
+        <h3 class="pros">2. Reduced Data Redundancy</h3>
+        <ul>
+            <li>Each piece of data stored only ONCE</li>
+            <li>Changes made in one place automatically reflect everywhere</li>
+            <li>Saves storage space</li>
+            <li>Easier to maintain data accuracy</li>
+        </ul>
+        <div class="example">
+            <p><strong>Example:</strong> Teacher's name stored once in Teachers table, referenced by TeacherID in multiple courses</p>
+        </div>
+    </div>
+    
+    <div class="box">
+        <h3 class="pros">3. Data Independence</h3>
+        <ul>
+            <li>Can change database structure without affecting applications</li>
+            <li>Physical storage separate from logical structure</li>
+            <li>Flexibility in database design</li>
+        </ul>
+    </div>
+    
+    <div class="box">
+        <h3 class="pros">4. Flexibility & Scalability</h3>
+        <ul>
+            <li>Easy to add new tables and relationships</li>
+            <li>Can handle growing amounts of data</li>
+            <li>Multiple users can access simultaneously</li>
+            <li>Can query data in many different ways</li>
+        </ul>
+    </div>
+    
+    <div class="box">
+        <h3 class="pros">5. Security & Access Control</h3>
+        <ul>
+            <li>User permissions can be set at table/field level</li>
+            <li>Sensitive data can be protected</li>
+            <li>Audit trails to track changes</li>
+        </ul>
+        <div class="example">
+            <p><strong>Example:</strong> Students can view grades but cannot edit them; only teachers can update grades</p>
+        </div>
+    </div>
+    
+    <div class="page-number">Page 9</div>
+</div>
+
+<!-- PAGE 10: Benefits continued & Limitations -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>✅ Benefits (continued) & ⚠️ Limitations</h1>
+    
+    <div class="box">
+        <h3 class="pros">6. Powerful Query Language (SQL)</h3>
+        <ul>
+            <li>Standardized language (SQL) used across all relational databases</li>
+            <li>Can perform complex queries joining multiple tables</li>
+            <li>Supports sorting, filtering, aggregation</li>
+            <li>Easier for humans to read and write</li>
+        </ul>
+        <div class="example">
+            <p><strong>Example SQL:</strong> SELECT Name FROM Students WHERE Grade > 90;</p>
+        </div>
+    </div>
+    
+    <div class="box">
+        <h3 class="pros">7. ACID Properties (Reliability)</h3>
+        <ul>
+            <li><strong>Atomicity:</strong> Transactions complete fully or not at all</li>
+            <li><strong>Consistency:</strong> Data remains valid after transactions</li>
+            <li><strong>Isolation:</strong> Concurrent transactions don't interfere</li>
+            <li><strong>Durability:</strong> Committed data is permanently saved</li>
+        </ul>
+    </div>
+    
+    <h2 style="color: #e74c3c; margin-top: 30px;">⚠️ Limitations of Relational Databases</h2>
+    
+    <div class="box" style="background-color: #ffe5e5;">
+        <h3 class="cons">1. Complexity</h3>
+        <ul>
+            <li>Requires careful planning and design (normalization)</li>
+            <li>Complex relationships can be difficult to model</li>
+            <li>Need to understand SQL and database concepts</li>
+            <li>Initial setup time-consuming</li>
+        </ul>
+    </div>
+    
+    <div class="box" style="background-color: #ffe5e5;">
+        <h3 class="cons">2. Performance Issues with Large Data</h3>
+        <ul>
+            <li>Joining many tables can be slow</li>
+            <li>Performance degrades with billions of records</li>
+            <li>Complex queries may take significant time</li>
+            <li>Indexing required for optimization (adds overhead)</li>
+        </ul>
+    </div>
+    
+    <div class="box" style="background-color: #ffe5e5;">
+        <h3 class="cons">3. Scalability Challenges</h3>
+        <ul>
+            <li>Vertical scaling (more powerful hardware) is expensive</li>
+            <li>Horizontal scaling (multiple servers) is difficult</li>
+            <li>Maintaining consistency across distributed systems is hard</li>
+        </ul>
+    </div>
+    
+    <div class="page-number">Page 10</div>
+</div>
+
+<!-- PAGE 11: More Limitations & Examples -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>⚠️ Limitations (continued)</h1>
+    
+    <div class="box" style="background-color: #ffe5e5;">
+        <h3 class="cons">4. Rigid Schema</h3>
+        <ul>
+            <li>Must define structure (tables, fields, types) upfront</li>
+            <li>Changing structure later can be difficult and disruptive</li>
+            <li>All records must fit the same schema</li>
+            <li>Not ideal for unstructured or rapidly changing data</li>
+        </ul>
+        <div class="example">
+            <p><strong>Example:</strong> If you want to add a new field "MiddleName" to Students table, you must modify the schema and potentially migrate existing data</p>
+        </div>
+    </div>
+    
+    <div class="box" style="background-color: #ffe5e5;">
+        <h3 class="cons">5. Not Ideal for Certain Data Types</h3>
+        <ul>
+            <li>Hierarchical data (like XML, JSON) doesn't fit well in tables</li>
+            <li>Graph data (social networks) requires many joins</li>
+            <li>Large binary objects (videos, images) are inefficient</li>
+        </ul>
+    </div>
+    
+    <div class="box" style="background-color: #ffe5e5;">
+        <h3 class="cons">6. Cost</h3>
+        <ul>
+            <li>Commercial databases (Oracle, MS SQL Server) can be expensive</li>
+            <li>Requires skilled database administrators (DBAs)</li>
+            <li>Hardware and maintenance costs</li>
+        </ul>
+    </div>
+    
+    <div class="box" style="background-color: #ffe5e5;">
+        <h3 class="cons">7. Object-Relational Impedance Mismatch</h3>
+        <ul>
+            <li>Objects in programming languages don't map perfectly to tables</li>
+            <li>Need ORM (Object-Relational Mapping) tools</li>
+            <li>Can lead to complex code</li>
+        </ul>
+    </div>
+    
+    <h2>Real-World Database Examples</h2>
+    <div class="box">
+        <h3>Popular Relational Database Systems:</h3>
+        <ul>
+            <li><strong>MySQL</strong> - Open source, widely used for web applications</li>
+            <li><strong>PostgreSQL</strong> - Advanced open source, strong data integrity</li>
+            <li><strong>Oracle Database</strong> - Enterprise-level, very powerful</li>
+            <li><strong>Microsoft SQL Server</strong> - Integrates with Microsoft ecosystem</li>
+            <li><strong>SQLite</strong> - Lightweight, used in mobile apps</li>
+        </ul>
+    </div>
+    
+    <div class="page-number">Page 11</div>
+</div>
+
+<!-- PAGE 12: Summary & Quick Reference -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>📝 Summary & Quick Reference</h1>
+    
+    <h2>Key Terms Recap</h2>
+    <table>
+        <tr>
+            <th style="width: 30%;">Term</th>
+            <th>Definition</th>
+        </tr>
+        <tr>
+            <td><strong>Entity</strong></td>
+            <td>A real-world object → becomes a table</td>
+        </tr>
+        <tr>
+            <td><strong>Primary Key (PK)</strong></td>
+            <td>Unique identifier for each record</td>
+        </tr>
+        <tr>
+            <td><strong>Foreign Key (FK)</strong></td>
+            <td>Field that links to Primary Key in another table</td>
+        </tr>
+        <tr>
+            <td><strong>Composite Key</strong></td>
+            <td>Multiple fields combined to create unique ID</td>
+        </tr>
+        <tr>
+            <td><strong>Cardinality</strong></td>
+            <td>Maximum number in relationship (1:1, 1:M, M:N)</td>
+        </tr>
+        <tr>
+            <td><strong>Modality</strong></td>
+            <td>Minimum participation (0=optional, 1=mandatory)</td>
+        </tr>
+    </table>
+    
+    <h2>Problem → Solution</h2>
+    <table>
+        <tr>
+            <th>Flat File Problem</th>
+            <th>Relational DB Solution</th>
+        </tr>
+        <tr>
+            <td>Insert Anomaly</td>
+            <td>✓ Separate tables - insert independently</td>
+        </tr>
+        <tr>
+            <td>Delete Anomaly</td>
+            <td>✓ Data in multiple tables - no accidental loss</td>
+        </tr>
+        <tr>
+            <td>Update Anomaly</td>
+            <td>✓ Data stored once - update in one place</td>
+        </tr>
+        <tr>
+            <td>Redundancy</td>
+            <td>✓ Normalization - no duplicate data</td>
+        </tr>
+    </table>
+    
+    <div class="note">
+        <h3>🎯 Exam Tips:</h3>
+        <ul>
+            <li>Always underline Primary Keys in ER diagrams</li>
+            <li>Show Foreign Keys with arrows pointing to their source PK</li>
+            <li>Remember: PK = unique & not null, FK = links tables</li>
+            <li>Know all three anomalies with examples!</li>
+            <li>Understand when to use composite keys</li>
+            <li>Be able to identify cardinality and modality from scenarios</li>
+        </ul>
+    </div>
+    
+    <div class="warning">
+        <h3>⚡ Common Mistakes to Avoid:</h3>
+        <ul>
+            <li>✗ Using names as Primary Keys (not unique!)</li>
+            <li>✗ Forgetting Foreign Keys when linking tables</li>
+            <li>✗ Creating many-to-many without a junction table</li>
+            <li>✗ Allowing NULL values in Primary Keys</li>
+        </ul>
+    </div>
+    
+    <div class="page-number">Page 12</div>
+</div>
+
+<!-- PAGE 13: Practice Scenario -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    <h1>🎓 Practice Scenario</h1>
+    
+    <div class="box">
+        <h2>School Library System</h2>
+        <p>Design a relational database for a school library. Consider:</p>
+        <ul>
+            <li>Students can borrow multiple books</li>
+            <li>Books can be borrowed by different students (but one at a time)</li>
+            <li>Track borrowing date and return date</li>
+            <li>Books have ISBN, title, author, genre</li>
+            <li>Students have ID, name, grade level, email</li>
+        </ul>
+    </div>
+    
+    <div class="diagram">
+        <h3>Proposed Solution:</h3>
+        <svg viewBox="0 0 800 450">
+            <!-- Students Table -->
+            <rect x="50" y="50" width="200" height="140" fill="#e3f2fd" stroke="#2196f3" stroke-width="3"/>
+            <text x="150" y="75" text-anchor="middle" font-size="18" font-weight="bold">Students</text>
+            <line x1="50" y1="85" x2="250" y2="85" stroke="#2196f3" stroke-width="2"/>
+            <text x="60" y="105" font-size="14" font-weight="bold" fill="#f39c12">PK: StudentID</text>
+            <text x="60" y="125" font-size="14">Name</text>
+            <text x="60" y="145" font-size="14">GradeLevel</text>
+            <text x="60" y="165" font-size="14">Email</text>
+            
+            <!-- Books Table -->
+            <rect x="550" y="50" width="200" height="160" fill="#fff3e0" stroke="#ff9800" stroke-width="3"/>
+            <text x="650" y="75" text-anchor="middle" font-size="18" font-weight="bold">Books</text>
+            <line x1="550" y1="85" x2="750" y2="85" stroke="#ff9800" stroke-width="2"/>
+            <text x="560" y="105" font-size="14" font-weight="bold" fill="#f39c12">PK: ISBN</text>
+            <text x="560" y="125" font-size="14">Title</text>
+            <text x="560" y="145" font-size="14">Author</text>
+            <text x="560" y="165" font-size="14">Genre</text>
+            <text x="560" y="185" font-size="14">Available</text>
+            
+            <!-- Borrowing Table (Junction) -->
+            <rect x="280" y="250" width="240" height="180" fill="#f3e5f5" stroke="#9c27b0" stroke-width="3"/>
+            <text x="400" y="275" text-anchor="middle" font-size="18" font-weight="bold">Borrowing</text>
+            <line x1="280" y1="285" x2="520" y2="285" stroke="#9c27b0" stroke-width="2"/>
+            <text x="290" y="305" font-size="14" font-weight="bold" fill="#f39c12">PK: BorrowingID</text>
+            <text x="290" y="330" font-size="14" font-weight="bold" fill="#3498db">FK: StudentID</text>
+            <text x="290" y="350" font-size="14" font-weight="bold" fill="#3498db">FK: ISBN</text>
+            <text x="290" y="375" font-size="14">BorrowDate</text>
+            <text x="290" y="395" font-size="14">DueDate</text>
+            <text x="290" y="415" font-size="14">ReturnDate</text>
+            
+            <!-- Arrows -->
+            <path d="M 150 190 L 350 250" stroke="#2c3e50" stroke-width="2" fill="none" marker-end="url(#arrowhead2)"/>
+            <text x="220" y="220" font-size="14" fill="#2c3e50">1</text>
+            <text x="320" y="245" font-size="14" fill="#2c3e50">M</text>
+            
+            <path d="M 650 210 L 450 250" stroke="#2c3e50" stroke-width="2" fill="none" marker-end="url(#arrowhead2)"/>
+            <text x="580" y="230" font-size="14" fill="#2c3e50">1</text>
+            <text x="480" y="245" font-size="14" fill="#2c3e50">M</text>
+            
+            <defs>
+                <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#2c3e50"/>
+                </marker>
+            </defs>
+        </svg>
+    </div>
+    
+    <div class="note">
+        <h3>🎯 Design Rationale:</h3>
+        <ul>
+            <li><strong>3 Tables:</strong> Students, Books, and Borrowing (junction table)</li>
+            <li><strong>M:N Relationship:</strong> Many students, many books → needs junction table</li>
+            <li><strong>Primary Keys:</strong> StudentID, ISBN, BorrowingID</li>
+            <li><strong>Foreign Keys:</strong> Borrowing table references both Students and Books</li>
+            <li><strong>Benefits:</strong> No redundancy, can track borrowing history, easy to query</li>
+        </ul>
+    </div>
+    
+    <div class="example">
+        <h3>Sample Queries You Could Run:</h3>
+        <p>• Which books has Alice borrowed?</p>
+        <p>• Which students currently have overdue books?</p>
+        <p>• How many times has "Harry Potter" been borrowed?</p>
+        <p>• All books borrowed in January 2024</p>
+    </div>
+    
+    <div class="page-number">Page 13</div>
+</div>
+
+<!-- PAGE 14: Visual Summary Card 1 -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    
+    <div style="text-align: center; margin: 0; padding: 0;">
+        <img src="sumaary-card1.png" alt="Summary Card 1" style="max-width: 100%; height: auto;">
+    </div>
+    
+    <div class="page-number">Page 14</div>
+</div>
+
+<!-- PAGE 15: Visual Summary Card 2 -->
+<div class="page">
+    <div class="spiral-hole" style="top: 50px;"></div>
+    <div class="spiral-hole" style="top: 150px;"></div>
+    <div class="spiral-hole" style="top: 250px;"></div>
+    <div class="spiral-hole" style="top: 350px;"></div>
+    <div class="spiral-hole" style="top: 450px;"></div>
+    <div class="spiral-hole" style="top: 550px;"></div>
+    <div class="spiral-hole" style="top: 650px;"></div>
+    <div class="spiral-hole" style="top: 750px;"></div>
+    <div class="spiral-hole" style="top: 850px;"></div>
+    <div class="spiral-hole" style="top: 950px;"></div>
+    
+    <div style="text-align: center; margin: 0; padding: 0;">
+        <img src="summary-card2.png" alt="Summary Card 2" style="max-width: 100%; height: auto;">
+    </div>
+    
+    <div class="page-number">Page 15</div>
+</div>
+
+</body>
+</html>
